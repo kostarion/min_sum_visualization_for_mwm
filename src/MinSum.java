@@ -1,22 +1,31 @@
 import org.graphstream.graph.Graph;
 
 /**
- * Created by dtochilkin on 30.10.17.
+ * Implementation of the min-sum algorithm for maximum weight matching.
  */
 public class MinSum {
+    // For storing messages from 'a' nodes to 'b' nodes.
     private double[][][] m_ab;
+    // For storing messages from 'a' nodes to 'a' nodes.
     private double[][][] m_ba;
+    // For keeping messages from 'a' nodes to 'b' nodes on the previous step.
     private double[][][] old_m_ab;
+    // For keeping messages from 'b' nodes to 'a' nodes on the previous step.
     private double[][][] old_m_ba;
+    // Weight matrix.
     private double[][] W;
+    // Believe values for each 'a' node;
     private double[][] b_a;
+    // Believe values for each 'b' node;
     private double[][] b_b;
+    // Current matching.
     private int[] matching;
     private int n;
 
     public MinSum(Graph g) {
         n = g.getNodeCount() / 2;
         W = new double[n][n];
+        // Convert weights on edges to a weight matrix.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 W[i][j] = (int)g.getEdge("a" + (i + 1) + "b" + (j + 1)).getAttribute("weight")
@@ -25,6 +34,7 @@ public class MinSum {
         }
         m_ab = new double[n][n][n];
         m_ba = new double[n][n][n];
+        // Initialize messages with weights on the edges.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 m_ab[i][j][i] = W[i][j];
@@ -36,6 +46,10 @@ public class MinSum {
         matching = new int[n];
     }
 
+    /**
+     * Runs one iteration of the algorithm.* @param steps order number of the step. Needed for proper logging.
+     * @return true if algorithm has converged.
+     */
     public boolean step() {
         old_m_ab = m_ab.clone();
         old_m_ba = m_ba.clone();
@@ -79,7 +93,7 @@ public class MinSum {
                 }
             }
         }
-        // Step 4;
+        // Step 4: Calculate overall believes for each node.
         for (int i = 0; i < n; ++i) {
             for (int r = 0; r < n; ++r) {
                 b_a[i][r] = W[i][r];
@@ -96,7 +110,7 @@ public class MinSum {
                 }
             }
         }
-        // Step 5;
+        // Step 5: Define current matching for the step.
         boolean converged = true;
         for (int i = 0; i < n; ++i) {
             double max_belief = 0.;

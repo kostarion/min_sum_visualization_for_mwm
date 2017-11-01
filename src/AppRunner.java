@@ -21,7 +21,6 @@ public class AppRunner {
         boolean converged = false;
         int steps = 0;
         while (!converged) {
-//        while (steps < 15) {
             converged = minSum.step(steps);
             bg.highlight_matching(minSum.get_matching());
             ++steps;
@@ -39,8 +38,6 @@ public class AppRunner {
         System.out.println("\n*****\n\nMin-sum algorithm have finished after " + (steps-1)
                 +" iterations.");
         System.out.println("Weight of the final matching: " + matching_sum + ".");
-        //bg.highlight_matching(minSum.get_matching());
-//        System.out.print(steps);
-        //bg.display();
+
     }
 }

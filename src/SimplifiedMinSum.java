@@ -1,11 +1,20 @@
 import org.graphstream.graph.Graph;
 
+/**
+ * Implementation of the simplified min-sum algorithm for maximum weight matching.
+ */
 public class SimplifiedMinSum {
+    // For storing messages from 'a' nodes to 'b' nodes.
     private double[][] m_ab;
+    // For storing messages from 'a' nodes to 'a' nodes.
     private double[][] m_ba;
+    // For keeping messages from 'a' nodes to 'b' nodes on the previous step.
     private double[][] old_m_ab;
+    // For keeping messages from 'b' nodes to 'a' nodes on the previous step.
     private double[][] old_m_ba;
+    // Weight matrix.
     private double[][] W;
+    // Current matching.
     private int[] matching;
     private int n;
     private boolean converged_last_time;
@@ -14,6 +23,7 @@ public class SimplifiedMinSum {
         converged_last_time = false;
         n = g.getNodeCount() / 2;
         W = new double[n][n];
+        // Convert weights on edges to a weight matrix.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 W[i][j] = (int)g.getEdge("a" + (i + 1) + "b" + (j + 1)).getAttribute("weight")
@@ -22,6 +32,7 @@ public class SimplifiedMinSum {
         }
         m_ab = new double[n][n];
         m_ba = new double[n][n];
+        // Initialize messages with weights on the edges.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 m_ab[i][j] = W[i][j];
@@ -31,9 +42,15 @@ public class SimplifiedMinSum {
         matching = new int[n];
     }
 
+    /**
+     * Runs one iteration of the algorithm.
+     * @param steps order number of the step. Needed for proper logging.
+     * @return true if algorithm has converged.
+     */
     public boolean step(int steps) {
         old_m_ab = m_ab.clone();
         old_m_ba = m_ba.clone();
+        // Step 4: Obtain messages from the messages on the previous iteration.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 double max_ba = 0;
@@ -57,7 +74,8 @@ public class SimplifiedMinSum {
             }
         }
 
-        // Step 5;
+        // Step 5: Calculate max belief value for each node and define matching
+        // for this step.
         boolean converged = true;
         for (int i = 0; i < n; ++i) {
             double max_belief = 0.;
@@ -72,14 +90,13 @@ public class SimplifiedMinSum {
             matching[i] = max_belief_ind;
         }
 
-
         boolean terminate = converged & converged_last_time;
         converged_last_time = converged;
-
         if (terminate) {
             return terminate;
         }
 
+        // Log matching from the current iteration if algorithm hasn't converged.
         System.out.println("\nIteration #" + (steps+1) + ":");
         System.out.print("\tMatching: ");
         int weight = 0;
