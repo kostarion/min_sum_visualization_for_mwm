@@ -26,6 +26,7 @@ public class SimplifiedMinSum {
         // Convert weights on edges to a weight matrix.
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
+                // To each node we add small random number in order to provide uniqueness of the solution.
                 W[i][j] = (int)g.getEdge("a" + (i + 1) + "b" + (j + 1)).getAttribute("weight")
                         + Math.random()*0.01;
             }
