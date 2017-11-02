@@ -1,4 +1,4 @@
-# Min-sum algorithm algorithm for maximum-weight-matching problem.
+# Min-sum algorithm for maximum-weight-matching problem.
 Program for visualizing min-sum belief propagation algorithm in scope of Graphical Models course at Skoltech.
 
 Algorithm is based on http://web.mit.edu/devavrat/www/maxprod-matching.pdf paper. Repository contains working implementations of both original and simlified versions of the algorithm.
