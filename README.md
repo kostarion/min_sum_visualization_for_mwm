@@ -18,7 +18,7 @@ On each iteration of the algorithm each node passes messages to its neighbours, 
 ## Implementation
 This project was made in order to visulize algorithm (matching choosing part) and check its correctness. In the original paper it was proven that algorithm converges to a right solution in <img src="https://latex.codecogs.com/gif.latex?O(\frac{nw*}{\varepsilon&space;})" title="O(\frac{nw*}{\varepsilon })" /> iterations where <img src="https://latex.codecogs.com/gif.latex?w*" title="w*" /> is a maximum weight in a graph and <img src="https://latex.codecogs.com/gif.latex?\varepsilon" title="\varepsilon" /> is the difference between the weight of the best and the second-best solutions. Firstly, I ran 10000 experiments on randomly generated graphs to check the correctness of the algorithm (for ground truth I used brute force algorithm of *O(n!))*. For each launched experiment the resulting matching was equal to the right one. In order to provide uniqueness of the solution and observability of the correctness on the visualized solution, each edge is initialized with a random integer weight from 0 to <img src="https://latex.codecogs.com/gif.latex?w*" title="w*" />, but at the beggining of the algorithm, very small real number is added.
 
-##Visualization example
+## Visualization example
 After launching the program, you will see the randomly generated bipartite graph with 2n vertices. Each *m* milliseconds as you specified, new iteration of the algorithm will be launched and the resulting matching will be highlighted in red.
 
 Example of running program for a (7, 7) graph (since it is quite hard to depict all the 49 edges properly, at the end of animation I rearrange graph nodes a bit so it's easier to read):
